@@ -1,0 +1,19 @@
+[Unit]
+Description=Aplicacion web que permite gestionar el funcionamiento del restaurante.
+# we need a network
+After=network.target
+
+[Service]
+# process starts, doesn't exit unless failing
+Type=simple
+# ejecuta el archivo .py que permite ejecutar el programa con el entorno virtual
+ExecStart=/datos/websockets/env/bin/python3 /datos/websockets/app.py
+# start in its directory
+WorkingDirectory=/datos/websockets
+# run as web user
+User=www-data
+Group=www-data
+
+[Install]
+# start with default stuff when we enable automatic startup
+WantedBy=default.target

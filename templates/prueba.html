@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba WebSocket</title>
+</head>
+
+<body>
+
+    <p>Enviar proforma para cobrar</p>
+    <button onclick="enviarProforma()">Enviar proforma</button>
+
+    <script type="text/javascript" src="static/socket.io.js"></script>
+    <script type="text/javascript" src="static/sweetalert2-10.js"></script>
+
+    <script type="text/javascript">
+
+        const socket = io('ws://192.168.0.113/ws');
+	
+
+        socket.on('connect', (response) => {
+            console.log('Contectado!');
+            socket.emit('join', { data: 'nuevo usuario' })
+        });
+
+        socket.on('disconnect', (response) => {
+            console.log('***** ¡Conexión perdida!');
+            desconexion();
+        });
+
+        socket.on('message', (response) => {
+            console.log(response.usuario);
+            ingresoUsuario(response.usuario);
+        });
+
+        socket.on('proforma_nueva', (response) => {
+            console.log('Nueva proforma registrada!');
+        });
+
+        window.onunload = () => {
+            socket.emit('leave', { data: 'viejo usuario' });
+        }
+
+        function ingresoUsuario(nombre) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-start',
+                showConfirmButton: true,
+                timer: 3500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Usuario ' + nombre
+            })
+        }
+
+        function enviarProforma(){
+            socket.emit('proforma', {data:'nueva proforma'});
+            console.log('proforma enviada')
+        }
+
+        function desconexion() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-start',
+                showConfirmButton: true,
+                timer: 3500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'error',
+                title: '¡Desconectado del servidor!'
+            })
+        }
+
+    </script>
+
+</body>
+
+</html>
