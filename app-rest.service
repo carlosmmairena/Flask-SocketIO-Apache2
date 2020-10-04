@@ -1,3 +1,6 @@
+# Este archivo se ubica en /etc/systemd/system/
+# Actualiza con systemctl daemon-reload
+# systemctl start app-rest.service
 [Unit]
 Description=Aplicacion web que permite gestionar el funcionamiento del restaurante.
 # we need a network
