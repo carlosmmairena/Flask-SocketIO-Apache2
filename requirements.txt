@@ -12,7 +12,6 @@ lazy-object-proxy==1.4.3
 MarkupSafe==1.1.1
 mccabe==0.6.1
 monotonic==1.5
-pkg-resources==0.0.0
 pylint==2.6.0
 python-engineio==3.13.2
 python-socketio==4.6.0
